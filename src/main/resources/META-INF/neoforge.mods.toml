@@ -1,0 +1,28 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "All Rights Reserved"
+issueTrackerURL = "https://github.com/ganjamonsta/ganja_gate/issues"
+
+[[mods]]
+modId = "ganjagate"
+version = "${file.jarVersion}"
+displayName = "GanjaGate"
+authors = "GanjaMonsta"
+description = '''
+Server-side anti-cheat mod for GanjaCraft.
+Verifies client mod list during the configuration phase and kicks players with unauthorized mods.
+'''
+
+[[dependencies.ganjagate]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.ganjagate]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.22)"
+ordering = "NONE"
+side = "BOTH"
