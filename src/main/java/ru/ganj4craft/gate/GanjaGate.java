@@ -1,21 +1,20 @@
 package ru.ganj4craft.gate;
 
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * GanjaGate — серверный античит-мод для GanjaCraft.
+ * GanjaGate — защитный и клиентский мод для GanjaCraft.
  *
- * При подключении игрока:
- * 1. Отправляет клиенту запрос на список модов (configuration phase)
- * 2. Клиент отвечает полным списком modId
- * 3. Сервер сверяет со своим whitelist
- * 4. Если есть лишние моды — кик до входа в мир
+ * 1. Античит-верификация модов во время Configuration phase
+ * 2. Кастомизация заголовка и иконки окна клиента
  */
 @Mod(GanjaGate.MOD_ID)
 public class GanjaGate {
@@ -23,11 +22,15 @@ public class GanjaGate {
     public static final Logger LOGGER = LoggerFactory.getLogger("GanjaGate");
 
     public GanjaGate(IEventBus modBus, ModContainer modContainer) {
-        LOGGER.info("[GanjaGate] Initializing server-side mod guard...");
+        LOGGER.info("[GanjaGate] Initializing GanjaGate mod...");
         modBus.addListener(this::onCommonSetup);
         modBus.addListener(GateNetwork::onRegisterPayloads);
         modBus.addListener(GateNetwork::onRegisterConfigurationTasks);
         NeoForge.EVENT_BUS.addListener(GateEvents::onPlayerLoggedIn);
+
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            ClientGateCustomizer.init(modBus);
+        }
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
