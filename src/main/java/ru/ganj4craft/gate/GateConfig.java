@@ -46,6 +46,15 @@ public class GateConfig {
     private static boolean autoUpdateWhitelist = true;
     private static String kickMessage = "§c[GanjaGate] Обнаружены неразрешённые моды!\\n\\n§fЗапрещённые моды:\\n§e{mods}\\n\\n§7Удалите их и перезайдите.";
 
+    // Настройки клиента (заголовок и иконка)
+    private static boolean enableCustomTitle = true;
+    private static String titleTemplate = "Ganj4Craft 4 сезон";
+    private static String titleInGameTemplate = "Ganj4Craft 4 сезон — [{player}]";
+    private static boolean enableCustomIcon = true;
+    private static String iconPath16 = "";
+    private static String iconPath32 = "";
+    private static String iconPath48 = "";
+
     public static void load() {
         if (Files.exists(CONFIG_PATH)) {
             try {
@@ -64,6 +73,26 @@ public class GateConfig {
                     for (JsonElement el : root.getAsJsonArray("whitelist")) {
                         whitelist.add(el.getAsString().toLowerCase());
                     }
+                }
+
+                // Секция клиента
+                if (root.has("client") && root.get("client").isJsonObject()) {
+                    JsonObject c = root.getAsJsonObject("client");
+                    if (c.has("enable_custom_title")) enableCustomTitle = c.get("enable_custom_title").getAsBoolean();
+                    if (c.has("title_template")) titleTemplate = c.get("title_template").getAsString();
+                    if (c.has("title_in_game_template")) titleInGameTemplate = c.get("title_in_game_template").getAsString();
+                    if (c.has("enable_custom_icon")) enableCustomIcon = c.get("enable_custom_icon").getAsBoolean();
+                    if (c.has("icon_path_16")) iconPath16 = c.get("icon_path_16").getAsString();
+                    if (c.has("icon_path_32")) iconPath32 = c.get("icon_path_32").getAsString();
+                    if (c.has("icon_path_48")) iconPath48 = c.get("icon_path_48").getAsString();
+                } else {
+                    if (root.has("enable_custom_title")) enableCustomTitle = root.get("enable_custom_title").getAsBoolean();
+                    if (root.has("title_template")) titleTemplate = root.get("title_template").getAsString();
+                    if (root.has("title_in_game_template")) titleInGameTemplate = root.get("title_in_game_template").getAsString();
+                    if (root.has("enable_custom_icon")) enableCustomIcon = root.get("enable_custom_icon").getAsBoolean();
+                    if (root.has("icon_path_16")) iconPath16 = root.get("icon_path_16").getAsString();
+                    if (root.has("icon_path_32")) iconPath32 = root.get("icon_path_32").getAsString();
+                    if (root.has("icon_path_48")) iconPath48 = root.get("icon_path_48").getAsString();
                 }
 
                 GanjaGate.LOGGER.info("[GanjaGate] Config loaded from {}", CONFIG_PATH);
@@ -215,6 +244,18 @@ public class GateConfig {
     public static void save() {
         try {
             JsonObject root = new JsonObject();
+
+            // Client settings
+            JsonObject clientObj = new JsonObject();
+            clientObj.addProperty("enable_custom_title", enableCustomTitle);
+            clientObj.addProperty("title_template", titleTemplate);
+            clientObj.addProperty("title_in_game_template", titleInGameTemplate);
+            clientObj.addProperty("enable_custom_icon", enableCustomIcon);
+            clientObj.addProperty("icon_path_16", iconPath16);
+            clientObj.addProperty("icon_path_32", iconPath32);
+            clientObj.addProperty("icon_path_48", iconPath48);
+            root.add("client", clientObj);
+
             root.addProperty("strict", strictMode);
             root.addProperty("auto_update_whitelist", autoUpdateWhitelist);
             root.addProperty("kick_message", kickMessage);
@@ -228,6 +269,34 @@ public class GateConfig {
         } catch (IOException e) {
             GanjaGate.LOGGER.error("[GanjaGate] Failed to save config", e);
         }
+    }
+
+    public static boolean isEnableCustomTitle() {
+        return enableCustomTitle;
+    }
+
+    public static String getTitleTemplate() {
+        return titleTemplate;
+    }
+
+    public static String getTitleInGameTemplate() {
+        return titleInGameTemplate;
+    }
+
+    public static boolean isEnableCustomIcon() {
+        return enableCustomIcon;
+    }
+
+    public static String getIconPath16() {
+        return iconPath16;
+    }
+
+    public static String getIconPath32() {
+        return iconPath32;
+    }
+
+    public static String getIconPath48() {
+        return iconPath48;
     }
 
     public static Set<String> getWhitelist() {
