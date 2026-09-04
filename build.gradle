@@ -40,6 +40,7 @@ jar {
         attributes([
             'Implementation-Title'  : project.mod_name,
             'Implementation-Version': project.mod_version,
+            'MixinConfigs'          : 'ganjagate.mixins.json',
         ])
     }
 }

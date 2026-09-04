@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "ru.ganj4craft.gate.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "LevelRendererMixin",
+    "PoseStackAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

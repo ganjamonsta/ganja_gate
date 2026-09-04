@@ -20,10 +20,15 @@ echo [GanjaGate] Build successful!
 echo [GanjaGate] JAR location: build\libs\ganja-gate-*.jar
 echo.
 
-rem ── Copy to MC server mods folder (optional) ──────────────────────
-rem Uncomment these lines to auto-deploy to your MC server:
+rem ── Copy to MC server and client mods folders ──────────────────
 set MC_MODS=s:\Games\LegacyLauncher_portable\game\home\neoforge-21.1.247\mods
 copy /Y build\libs\ganja-gate-*.jar "%MC_MODS%\"
 echo [GanjaGate] Deployed to %MC_MODS%
+
+set CLIENT_MODS=s:\Games\GanjaCraft Launcher\game\mods
+if exist "%CLIENT_MODS%" (
+    copy /Y build\libs\ganja-gate-*.jar "%CLIENT_MODS%\"
+    echo [GanjaGate] Deployed to %CLIENT_MODS%
+)
 
 pause
